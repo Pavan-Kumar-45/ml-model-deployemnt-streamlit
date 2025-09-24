@@ -9,7 +9,7 @@ paginator = s3.get_paginator('list_objects_v2')
 local_path = 'tinybert-sentiment-analysis'        # Local destination folder
 s3_path = 'ml_models/tinybert-sentiment-analysis/'             # S3 prefix (acts like a folder)
 
-def download_directory(local_path , s3_prefix):
+def download_directory(local_path, s3_prefix):
     # Paginator handles large numbers of objects (splits into pages)
     for result in paginator.paginate(Bucket=bucket_name, Prefix=s3_prefix):
         if 'Contents' in result:     # Check if this page has any objects
@@ -26,11 +26,15 @@ def download_directory(local_path , s3_prefix):
                 s3.download_file(bucket_name, s3_key, local_file)
 
 
+ 
+
 flag = st.button("Download Model")
 
-if flag : 
+if flag:
     with st.spinner("Downloading..."):
-        download_directory(s3_path, local_path)
+        download_directory(local_path, s3_path)
+    st.success(f"Model downloaded to {local_path}")
+
 
 text = st.text_area("Enter Your Review : " , "Type...") 
 
